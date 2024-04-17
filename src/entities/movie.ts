@@ -1,4 +1,4 @@
-export type Article = {
+export type Movie = {
   id: string;
   title: string;
   author: string;
@@ -6,7 +6,7 @@ export type Article = {
   isPublished: boolean;
 };
 
-export type ArticleCreateDto = {
+export type MovieCreateDto = {
   title: string;
   author: string;
   content?: string;

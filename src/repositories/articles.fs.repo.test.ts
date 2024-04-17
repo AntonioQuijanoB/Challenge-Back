@@ -1,17 +1,18 @@
 import e from 'express';
-import { ArticlesFsRepo } from './articles.fs.repo';
 import { readFile } from 'fs/promises';
 import { HttpError } from '../middleware/errors.middleware';
 import { type ArticleCreateDto } from '../entities/article';
 import { articleUpdateDtoSchema } from '../entities/article.schema';
+import { MoviesFsRepo } from './movies.fs.repo';
+import { type MovieCreateDto } from '../entities/movie';
 
 jest.mock('fs/promises');
 
 describe('Given a instance of the class ArticlesFsRepo', () => {
-  const repo = new ArticlesFsRepo();
+  const repo = new MoviesFsRepo();
 
   test('Then it should be instance of the class', () => {
-    expect(repo).toBeInstanceOf(ArticlesFsRepo);
+    expect(repo).toBeInstanceOf(MoviesFsRepo);
   });
   describe('When we use the method readAll', () => {
     test('Then it should call readFile', async () => {
@@ -35,7 +36,7 @@ describe('Given a instance of the class ArticlesFsRepo', () => {
     test('Then it should throw an error', async () => {
       (readFile as jest.Mock).mockResolvedValue('[{"id": "1"}]');
       await expect(repo.readById('2')).rejects.toThrow(
-        new HttpError(404, 'Not Found', 'Article 2 not found')
+        new HttpError(404, 'Not Found', 'Movie 2 not found')
       );
     });
   });
@@ -43,7 +44,7 @@ describe('Given a instance of the class ArticlesFsRepo', () => {
   describe('When we use the method create', () => {
     test('Then it should call readFile and writeFile', async () => {
       (readFile as jest.Mock).mockResolvedValue('[]');
-      const data = {} as unknown as ArticleCreateDto;
+      const data = {} as unknown as MovieCreateDto;
       const result = await repo.create(data);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(result).toEqual({ id: expect.any(String) });
